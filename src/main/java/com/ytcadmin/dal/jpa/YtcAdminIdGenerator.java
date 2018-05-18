@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.hibernate.engine.spi.SessionImplementor;
 
 
-public class UstmaIdGenerator extends org.hibernate.id.IncrementGenerator {
+public class YtcAdminIdGenerator extends org.hibernate.id.IncrementGenerator {
     @Override
     public Serializable generate(SessionImplementor session, Object object) {  	
     	    	

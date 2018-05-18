@@ -7,18 +7,18 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.ytcadmin.common.model.EmailDetails;
-import com.ytcadmin.mail.intf.IYTMMMailConnectorService;
+import com.ytcadmin.mail.intf.IYTCAdminMailConnectorService;
 
 @Component
 @Configuration
-@PropertySource("classpath:/config/ytmm.properties")
-public class YTMMMailConnectorServiceImpl implements IYTMMMailConnectorService{
+@PropertySource("classpath:/config/ytcadmin.properties")
+public class YTCAdminMailConnectorServiceImpl implements IYTCAdminMailConnectorService{
 	
 	@Autowired
 	private Environment env;
 
 	@Autowired
-	private YTMMMailSenderServiceImpl ytcMailSenderService;
+	private YTCAdminMailSenderServiceImpl ytcMailSenderService;
 	
 	public void sendEmail(EmailDetails emailDetails){
 		if(emailDetails != null && env != null){

@@ -1,6 +1,5 @@
 package com.ytcadmin.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ytcadmin.common.model.Employee;
-import com.ytcadmin.constant.ProgramConstant;
 import com.ytcadmin.service.ServiceContext;
 
 
@@ -33,71 +31,10 @@ public class NavigationController{
 		return returnModel;
 	}
 	
-	@RequestMapping(value ={"/employee"}, method = RequestMethod.GET)
-	public String employee(HttpServletRequest request, Model model) {
-		String userName = null;
-		String returnModel = null;
-		List<Employee> employee = null;
-		if (serviceContext != null && serviceContext.getEmployee() != null) {
-			userName = serviceContext.getEmployee().getFIRST_NAME() + ProgramConstant.NAME_DELIMITER
-					+ serviceContext.getEmployee().getLAST_NAME();
-			returnModel = "employee-absence-form";
-			model.addAttribute("loginUserNameValue", userName);
-			employee = new ArrayList<Employee>();
-			employee.add(serviceContext.getEmployee());
-			model.addAttribute("EmployeeInfo", employee);
-		}
-
-		if (serviceContext == null || userName == null) {
-			returnModel = "login";
-		}
-
-		return returnModel;
-	}
 	
-	@RequestMapping(value ={"/absenceHistory"}, method = RequestMethod.GET)
-	public String getEmployeeAbsenceHistory(HttpServletRequest request, Model model) {
-		String userName = null;
-		String returnModel = null;
-		List<Employee> employee = null;
-		if (serviceContext != null && serviceContext.getEmployee() != null) {
-			userName = serviceContext.getEmployee().getFIRST_NAME() + ProgramConstant.NAME_DELIMITER
-					+ serviceContext.getEmployee().getLAST_NAME();
-			returnModel = "employee-absence-history";
-			model.addAttribute("loginUserNameValue", userName);
-			employee = new ArrayList<Employee>();
-			employee.add(serviceContext.getEmployee());
-			model.addAttribute("EmployeeInfo", employee);
-		}
-
-		if (serviceContext == null || userName == null) {
-			returnModel = "login";
-		}
-
-		return returnModel;
-	}
-
-	@RequestMapping(value ={"/report"}, method = RequestMethod.GET)
-	public String getEmployeeAbsenceReport(HttpServletRequest request, Model model) {
-		String userName = null;
-		String returnModel = null;
-		List<Employee> employee = null;
-		if (serviceContext != null && serviceContext.getEmployee() != null) {
-			userName = serviceContext.getEmployee().getFIRST_NAME() + ProgramConstant.NAME_DELIMITER
-					+ serviceContext.getEmployee().getLAST_NAME();
-			returnModel = "employee-absence-report";
-			model.addAttribute("loginUserNameValue", userName);
-			employee = new ArrayList<Employee>();
-			employee.add(serviceContext.getEmployee());
-			model.addAttribute("EmployeeInfo", employee);
-		}
-
-		if (serviceContext == null || userName == null) {
-			returnModel = "login";
-		}
-
-		return returnModel;
-	}
+	
+	
+	
 	
 	@RequestMapping(value ={"/upload"}, method = RequestMethod.GET)
 	public String getBulkUpload(HttpServletRequest request, Model model) {

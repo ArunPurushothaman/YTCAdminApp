@@ -23,7 +23,7 @@ import javax.mail.util.ByteArrayDataSource;
 import com.ytcadmin.common.model.EmailDetails;
 import com.ytcadmin.constant.EmailConstant;
 
-public class YTMMMailSenderServiceImpl{
+public class YTCAdminMailSenderServiceImpl{
 	
 	public void sendMail(EmailDetails emailDetails){
 

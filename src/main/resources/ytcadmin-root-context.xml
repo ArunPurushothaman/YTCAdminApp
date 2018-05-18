@@ -9,9 +9,9 @@
 	<!-- provide access to individual properties -->
 	<context:property-placeholder
 		ignore-resource-not-found="true"
-		location="classpath:config/ytmm.properties" />
+		location="classpath:config/ytcadmin.properties" />
 
 	
-	<import resource="ytmm-service-context.xml" />
-	<import resource="ytmm-connection-war.xml" />
+	<import resource="ytcadmin-service-context.xml" />
+	<import resource="ytcadmin-connection-war.xml" />
 </beans>

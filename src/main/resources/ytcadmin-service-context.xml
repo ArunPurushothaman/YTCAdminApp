@@ -22,9 +22,9 @@
 
 	<bean id="employeeService" class="com.ytcadmin.service.impl.EmployeeService">
 	</bean>
-	<bean id="ytmmMailSenderService" class="com.ytcadmin.mail.impl.YTMMMailSenderServiceImpl">
+	<bean id="ytcAdminMailSenderService" class="com.ytcadmin.mail.impl.YTCAdminMailSenderServiceImpl">
 	</bean>
-	<bean id="ytmmMailConnectorService" class="com.ytcadmin.mail.impl.YTMMMailConnectorServiceImpl">
+	<bean id="ytcAdminMailConnectorService" class="com.ytcadmin.mail.impl.YTCAdminMailConnectorServiceImpl">
 	</bean>
 	<bean id="serviceLocator" class="com.ytcadmin.service.impl.ServiceLocator">
 	</bean>

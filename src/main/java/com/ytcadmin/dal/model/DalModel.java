@@ -31,8 +31,8 @@ public abstract class DalModel implements Cloneable, Serializable {
 
 	@Id
 	@Column(name = "ID")
-	@GeneratedValue(generator = "UstmaIdGenerator")
-	@GenericGenerator(name = "UstmaIdGenerator", strategy = "com.ytcadmin.dal.jpa.UstmaIdGenerator", parameters = { @Parameter(name = "strategy", value = "uuid") })
+	@GeneratedValue(generator = "YtcAdminIdGenerator")
+	@GenericGenerator(name = "YtcAdminIdGenerator", strategy = "com.ytcadmin.dal.jpa.YtcAdminIdGenerator", parameters = { @Parameter(name = "strategy", value = "uuid") })
 	public Integer getId() {
 		return id;
 	}

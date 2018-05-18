@@ -20,23 +20,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.node.TextNode;
+
 import com.tiredex.yoko.utils.LdapUtil;
-import com.ytcadmin.common.result.ModelResult;
+
 import com.ytcadmin.common.model.DropDown;
 import com.ytcadmin.common.model.Employee;
-import com.ytcadmin.common.model.EmployeeAbsence;
-import com.ytcadmin.common.model.EmployeeAbsenceDropDown;
-import com.ytcadmin.common.model.EmployeeMaster;
-import com.ytcadmin.common.model.ReportModel;
+
 import com.ytcadmin.common.result.ListResult;
 import com.ytcadmin.constant.ProgramConstant;
-import com.ytcadmin.dal.model.DalEmployeeMaster;
+
 import com.ytcadmin.dal.model.DalUserMaster;
 import com.ytcadmin.service.IEmployeeService;
 import com.ytcadmin.service.ServiceContext;
@@ -297,127 +294,9 @@ public class UserController extends BaseController {
 		return resultList;
 	}
 
+
+
 	
-	@RequestMapping(value = "/v1/getAllEmployeeDetails", method = RequestMethod.GET)
-	public @ResponseBody  List<String> getAllEmployeeNames(HttpServletRequest request) {
-		 List<String> nameList =new ArrayList<String>(); 
-		 nameList=getService(request).getAllEmployeeNames();
-		
-		return nameList;
-		
-	}
-	
-	
-	@RequestMapping(value = "/v1/getAbsentEmployeeDetail", method = RequestMethod.POST)
-	public @ResponseBody EmployeeMaster getAbsentEmployeeDetail(HttpServletRequest request, @RequestBody TextNode employeeName) {		
-		
-		EmployeeMaster employeeMaster=getService(request).getAbsentEmployeeDetail(employeeName.textValue());
-		
-		return employeeMaster;
-	}
-	
-	
-	@RequestMapping(value = "/v1/getEmployeeName/{employeeName}", method = RequestMethod.GET)
-	public @ResponseBody  String getEmployeeName(HttpServletRequest request, @PathVariable("employeeName") String employeeName) {
-		
-		List<DalEmployeeMaster> result=getService(request).getEmployeeByName(employeeName);
-		if(result.isEmpty()){
-			return "Not Available";
-		}
-		return result.get(0).getFullName();
-		
-	}
-	
-	@RequestMapping(value = "v1/saveEmployeeAbsenceDetail", method = RequestMethod.POST)
-	public @ResponseBody ModelResult<EmployeeAbsence> saveEmployeeAbsenceDetail(HttpServletRequest request, @RequestBody EmployeeAbsence employeeAbsence) {
-		EmployeeAbsence emp;
-		try{
-			emp=getService(request).saveEmployeeAbsenceDetail(employeeAbsence);
-		}catch(Exception e){
-			logger.error("Exception in saveEmployeeAbsenceDetail: ",e);
-			throw e;
-		}
-		return new ModelResult<EmployeeAbsence> (emp);
-	}
-	
-	@RequestMapping(value = "v1/updateEmployeeAbsenceDetail", method = RequestMethod.POST)
-	public @ResponseBody ModelResult<EmployeeAbsence> updateEmployeeAbsenceDetail(HttpServletRequest request, @RequestBody EmployeeAbsence employeeAbsence) {
-		EmployeeAbsence emp;
-		try{
-			emp=getService(request).updateEmployeeAbsenceDetail(employeeAbsence);
-		}catch(Exception e){
-			logger.error("Exception in updateEmployeeAbsenceDetail: ",e);
-			throw e;
-		}
-		return new ModelResult<EmployeeAbsence> (emp);
-	}
-	
-	
-	@RequestMapping(value = "/v1/getEmployeeAbsenceDropDown", method = RequestMethod.GET)
-	public @ResponseBody EmployeeAbsenceDropDown getEmployeeAbsenceDropDown(HttpServletRequest request) {
-		EmployeeAbsenceDropDown employeeAbsenceDropDown = null;
-		try{
-			employeeAbsenceDropDown = (EmployeeAbsenceDropDown)(getService(request).getEmployeeAbsenceDropDown());
-		}catch(Exception e){
-			logger.error("Exception in getEmployeeAbsenceDropDown: ",e);
-			throw e;
-		}
-		return employeeAbsenceDropDown;
-	}
-	
-	@RequestMapping(value = "/v1/getEmployeeAbsenceHistory/{employeeName}", method = RequestMethod.GET)
-	public @ResponseBody ListResult<EmployeeAbsence> getEmployeeAbsenceHistory(HttpServletRequest request, @PathVariable("employeeName") String employeeName) {
-		
-		return new ListResult<EmployeeAbsence>(getService(request).getEmployeeAbsenceHistory(employeeName));
-		
-	}
-	
-	@RequestMapping(value = "/v1/getEmployeeAbsenceReport", method = RequestMethod.POST)
-	public @ResponseBody ListResult<EmployeeAbsence> getEmployeeAbsenceReport(HttpServletRequest request, @RequestBody ReportModel reportModel) {
-		
-		List<EmployeeAbsence> list=null;
-		try{
-			list=getService(request).getEmployeeAbsenceReport(reportModel);
-		}catch(Exception e){
-			logger.error("Exception in getEmployeeAbsenceReport: ",e);
-			throw e;
-		}
-		return new ListResult<EmployeeAbsence>(list);
-		
-	}
-	
-	@RequestMapping(value = "/v1/removeEmployeeAbsenceRecord/{id}", method = RequestMethod.GET)
-	public @ResponseBody String removeEmployeeAbsenceRecord(HttpServletRequest request, @PathVariable("id") String id) {
-		String status="fail";
-		try{
-			status=getService(request).removeEmployeeAbsenceRecord(id);
-		}catch(Exception e){
-			logger.error("Exception in removeEmployeeAbsenceRecord: ",e);
-			throw e;
-		}
-		return status;
-		
-	}
-	
-	@RequestMapping(value = "/v1/getEmployeeAbsenceRecord/{id}", method = RequestMethod.GET)
-	public @ResponseBody EmployeeAbsence getEmployeeAbsenceRecord(HttpServletRequest request, @PathVariable("id") String id) {
-		EmployeeAbsence abs;
-		try{
-			abs=getService(request).getEmployeeAbsenceRecord(id);
-		}catch(Exception e){
-			logger.error("Exception in getEmployeeAbsenceRecord: ",e);
-			throw e;
-		}
-		return abs;
-		
-	}
-	
-	/*@RequestMapping(value = "/v1/getReportingEmployeeDropDown/{managerList}", method = RequestMethod.GET)
-	public @ResponseBody  List<DropDown> getReportingEmployeeDropDownList(HttpServletRequest request, @PathVariable("managerList") String managerList) {
-		 List<DropDown> dropdown=(getService(request).getReportingEmployeeDropDownList(Arrays.asList(managerList.split("\\s*,\\s*"))));
-		return  dropdown;
-		
-	}*/
 	
 	@RequestMapping(value = "/v1/getAllDealerDropDownList", method = RequestMethod.GET)
 	public @ResponseBody List<DropDown> getAllDealerDropDownList(HttpServletRequest request) {

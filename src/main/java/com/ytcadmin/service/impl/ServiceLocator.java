@@ -4,7 +4,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.ytcadmin.mail.intf.IYTMMMailConnectorService;
 import com.ytcadmin.service.IEmployeeService;
 import com.ytcadmin.service.IServiceLocator;
 
@@ -18,8 +17,7 @@ public class ServiceLocator implements IServiceLocator, ApplicationContextAware
     
     private IEmployeeService employeeService;
     
-    //private IYTMMMailConnectorService ytmmMailConnectorService;
-    
+   
 
     
     @Override
@@ -36,13 +34,7 @@ public class ServiceLocator implements IServiceLocator, ApplicationContextAware
         return employeeService;
     }
     
-   /* @Override
-    public IYTMMMailConnectorService getYTMMMailConnectorService() {
-        if (ytmmMailConnectorService == null) {
-        	ytmmMailConnectorService = (IYTMMMailConnectorService) appContext.getBean("ytmmMailConnectorService");
-        }
-        return ytmmMailConnectorService;
-    }*/
+
 	
   
 }
