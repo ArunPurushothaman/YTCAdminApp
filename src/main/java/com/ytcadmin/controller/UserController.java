@@ -2,7 +2,10 @@ package com.ytcadmin.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -20,18 +23,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.tiredex.yoko.utils.LdapUtil;
-
 import com.ytcadmin.common.model.DropDown;
 import com.ytcadmin.common.model.Employee;
-
+import com.ytcadmin.common.model.Order;
 import com.ytcadmin.common.result.ListResult;
+import com.ytcadmin.common.result.ModelResult;
 import com.ytcadmin.constant.ProgramConstant;
 
 import com.ytcadmin.dal.model.DalUserMaster;
@@ -308,6 +311,82 @@ public class UserController extends BaseController {
 			throw e;
 		}
 		return employeeAbsenceDropDown;
+	}
+	
+	@RequestMapping(value = "/v1/uploadOrder", method = RequestMethod.POST)
+	public @ResponseBody ModelResult<Order> saveReconCreditPaymentData(HttpServletRequest request,  @RequestBody List<Order> orderList) {
+		
+		//return new ModelResult<Order>(getService(request).saveReconCreditPaymentData(reconDataList, serviceContext.getEmployee()));
+		System.out.println("");
+		
+		
+
+        /* DealerServicesPort proxy = new DealerWebServices().getWebServicePort();
+         //System.out.println(prefix + "serv.getWebServicePortAddress() = [" + serv.getWebServicePortAddress() + ']');
+
+         
+         
+         LoginAndOrderReq req = new LoginAndOrderReq();
+         
+         TransactionReq tReq = new TransactionReq();
+         tReq.setTransactionId("SFT6959");
+         req.setTransactionRequest(tReq);
+         
+         LoginInfo login = new LoginInfo();
+         login.setUserId("TEST_LOGIN_4");        // udt 24291, sap 10000620, Ben Tire
+         login.setPassword("al");
+         req.setLoginCredentials(login);
+         
+         
+         
+         
+         com.ytcadmin.client.Order orderDetails = new  com.ytcadmin.client.Order();
+         
+         orderDetails.setShipToNumber("20002363");   // udt 24291001, sap 20002363, BEN TIRE, TOLEDO IL
+         
+          
+          List<OrderLineItemDetails> OrderLineItemDetailsList=new ArrayList<OrderLineItemDetails>();
+          for (Iterator iterator = orderList.iterator(); iterator.hasNext();) {
+			Order order = (Order) iterator.next();
+			OrderLineItemDetails orderItem = new OrderLineItemDetails();
+			orderItem.setPartNumber(order.getProduct());
+			orderItem.setQuantity( BigInteger.valueOf(order.getOrder()));
+			OrderLineItemDetailsList.add(orderItem);
+		}
+          OrderLineItems orderLineItems=new OrderLineItems();
+          orderLineItems.getItemDetail().addAll(OrderLineItemDetailsList);
+          
+          orderDetails.setOrderItems(orderLineItems);
+
+         
+         orderDetails.setPoNumber("SFT6959");
+         orderDetails.setOrderedBy("Stephen Smith");
+         orderDetails.setOrderOrShippingNotes("");
+         orderDetails.setEMail("alain.graziani@yokohamatire.com");
+         orderDetails.setPhoneNumber("3177982103");
+         
+         req.setOrderDetails(orderDetails);
+         
+
+         
+
+         
+         System.out.println("calling web service");
+         OrderResp resp = proxy.loginAndOrderOperation(req);
+         System.out.println( "back from web service");
+         		
+         TransactionResp results = resp.getTransactionResponse();
+         
+         if (results.isIsTransactionSuccessful().booleanValue()) {
+             OrderConfirmation ord = resp.getConfirmedOrder();
+             String oNum = ord.getOrderNumber();
+             System.out.println( new Date() + "> orderNum = [" + oNum + ']');
+         } // if
+         else {
+             System.out.println( new Date() + "> search failed; " + resp.getTransactionResponse().getError().get(0));
+         }*/
+		
+		return null;
 	}
 	
 	IEmployeeService getService(HttpServletRequest request) {

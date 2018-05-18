@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="Yokohama">
+<meta name="keyword" content="">
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+
+<title>YTC Admin</title>
+
+<!-- Bootstrap core CSS -->
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/bootstrap-reset.css" rel="stylesheet">
+
+<!--external css-->
+<link href="resources/assets/font-awesome/css/font-awesome.css"
+	rel="stylesheet" />
+<link rel="stylesheet" type="text/css"
+	href="resources/assets/bootstrap-datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/assets/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/assets/bootstrap-timepicker/compiled/timepicker.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/assets/bootstrap-datetimepicker/css/datetimepicker.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/assets/bootstrap-fileupload/bootstrap-fileupload.css" />
+<link rel="stylesheet"
+	href="resources/assets/data-tables/DT_bootstrap.css" />
+
+<!--bootstrap switcher-->
+<link rel="stylesheet" type="text/css"
+	href="resources/assets/bootstrap-switch/static/stylesheets/bootstrap-switch.css" />
+<!--select 2-->
+<link rel="stylesheet" type="text/css"
+	href="resources/assets/select2/css/select2.min.css" />
+
+<!-- Custom styles for this template -->
+<link href="resources/css/style.css" rel="stylesheet">
+<link href="resources/css/style-responsive.css" rel="stylesheet" />
+
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+
+<script type="text/javascript">
+       function sync()
+       {
+         var n1 = document.getElementById('include');
+         var n2 = document.getElementById('input4');
+         n2.value = n1.value;
+       }
+        //Export to Excel 
+   function tableToExcel(tableId, fileName) {
+	    var tab_text="<table border='2px'><tr>";
+	    var textRange; var j=0;
+	    tab = document.getElementById(tableId); // id of table
+	    fileName=fileName+$("#loginUserName").html()+"_"+new Date().toLocaleString();
+	    //var headerTxt=headerTxt=tab.rows[j].getElementsByTagName('th')[8].outerHTML;
+		for(j = 0 ; j < tab.rows.length ; j++) 
+	    {  
+	       var table_cells = tab.rows[j].getElementsByTagName('td'); 
+	        for (var i = 0; i < table_cells.length; i++) { 
+		        var cell = table_cells[i];
+	   			 if(i==7)
+		   		{
+		   		 cell.setAttribute("style", 'mso-number-format:"\@"');
+		   		}  
+		   		if((i==11)||(i==12))
+		   		{
+		   		 	
+		   			if(cell.innerHTML != '0'){
+		   		 		cell.setAttribute("style", 'mso-number-format:"\#\,\#\#0\.00"');
+		   		 	}
+		   		}
+		   		/*  if(i==8)
+		   		{
+		   		  cellTxt=cell.outerHTML;
+		   		}  */
+	   		}
+	   		var text="";
+	   	 	text=tab.rows[j].innerHTML;
+	   		/* if(j==0)
+	   		{
+	   		 text=tab.rows[j].innerHTML.replace(headerTxt,"");
+	   		}
+	   		else
+	   		{
+	   		  text=tab.rows[j].innerHTML.replace(cellTxt,"");
+	   		} */
+	   		
+	   		tab_text=tab_text+text+"</tr>";
+	    }
+	    tab_text=tab_text+"</table>";
+	    tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+	    tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+	    tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+	    tab_text= tab_text.replace(/<th/g,'<th style="background-color: #87AFC6"');
+	    if (navigator.userAgent.indexOf('Trident')>0 || navigator.userAgent.indexOf('Edge')>0)
+	    {
+	    	var blobObject = new Blob([tab_text]); 
+	    	window.navigator.msSaveOrOpenBlob(blobObject, fileName+'.xls');
+	    }else
+	    {
+	        var a = document.createElement('a');
+	        var data_type = 'data:application/vnd.ms-excel';
+		    a.href = data_type + ', ' + encodeURIComponent(tab_text);
+			a.download =  fileName+'.xls';
+			document.body.appendChild(a);
+			a.click();
+			document.body.appendChild(a);   
+		}
+    }
+    </script>
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="resources/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<script src="resources/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="resources/js/jquery.scrollTo.min.js"></script>
+<script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script> 
+ <script class="include" type="text/javascript" src="resources/js/jquery.dcjqaccordion.2.7.js"></script>
+<!-- Ignite UI Required Combined JavaScript Files -->
+
+  <!--right slidebar-->
+  <script src="resources/js/slidebars.min.js"></script>
+
+<!--Form Validation-->
+<script src="resources/js/bootstrap-validator.min.js"
+	type="text/javascript"></script>
+
+<!--Form Wizard-->
+<script src="resources/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="resources/js/slidebars.min.js"></script>
+<script type="text/javascript"
+	src="resources/assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript"
+	src="resources/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript"
+	src="resources/assets/bootstrap-daterangepicker/moment.min.js"></script>
+<script type="text/javascript"
+	src="resources/assets/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<script type="text/javascript"
+	src="resources/assets/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript"
+	src="resources/assets/data-tables/DT_bootstrap.js"></script>
+
+<link rel="stylesheet" href="resources/css/breadcrumbs.css">
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+<script src="resources/js/jquery.breadcrumbs-generator.js"></script>
+ <!-- time out -->
+	<script src="resources/js/jquery.userTimeout.js"></script>  
+
+
+
+<style>
+#drop {
+	border: 2px dashed #bbb;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 25px;
+	text-align: center;
+	font: 20pt bold, "Vollkorn";
+	color: #bbb
+}
+
+#b64data {
+	width: 100%;
+}
+
+a {
+	text-decoration: none
+}
+
+	
+.editablegrid-DOC_NO{
+	white-space:nowrap;
+}
+</style>
+
+<script src="resources/js/editablegrid.js"></script>
+<script src="resources/js/editablegrid_renderers.js"></script>
+<script src="resources/js/editablegrid_editors.js"></script>
+<script src="resources/js/editablegrid_validators.js"></script>
+<script src="resources/js/editablegrid_utils.js"></script>
+<script src="resources/js/editablegrid_charts.js"></script>
+<link rel="stylesheet" href="resources/css/editablegrid.css"
+	type="text/css" media="screen">
+
+<style>
+/* body { font-family:'lucida grande', tahoma, verdana, arial, sans-serif; font-size:11px; } */
+h1 {
+	font-size: 15px;
+}
+
+a {
+	color: #3b5edd;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+table.testgrid {
+	border-collapse: collapse;
+	border: 1px solid #CCB;
+	width: 100%;
+}
+
+table.testgrid td, table.testgrid th {
+	padding: 5px;
+	border: 1px solid #E0E0E0;
+}
+
+table.testgrid th {
+	background: #E5E5E5;
+	text-align: left;
+}
+
+input.invalid {
+	background: red;
+	color: #FDFDFD;
+}
+
+.editablegrid-CREDIT_AMOUNT,.editablegrid-PAYMENT_AMOUNT{
+text-align:right;
+}
+
+</style>
+
+
+
+
+<script src="resources/js/cpexcel.js"></script>
+<script src="resources/js/shim.js"></script>
+<script src="resources/js/jszip.js"></script>
+<script src="resources/js/xlsx.js"></script>
+<script>
+	var invoiceDiscountHeader = ['PO', 'DATE', 'TIRESHOP', 'PRODUCT NUMBER', 'ORDER', 'DESCRIPTION'];
+	var fileData ={};
+	var dataUploaded = false;
+	/*jshint browser:true */
+	/*global XLSX */
+	var X = XLSX;
+	var XW = {
+		/* worker message */
+		msg: 'xlsx',
+		/* worker scripts */
+		rABS: './xlsxworker2.js',
+		norABS: './xlsxworker1.js',
+		noxfer: './xlsxworker.js'
+	};
+	
+	var rABS = typeof FileReader !== "undefined" && typeof FileReader.prototype !== "undefined" && typeof FileReader.prototype.readAsBinaryString !== "undefined";
+	if(!rABS) {
+		document.getElementsByName("userabs")[0].disabled = true;
+		document.getElementsByName("userabs")[0].checked = false;
+	}
+	
+	var use_worker = typeof Worker !== 'undefined';
+	if(!use_worker) {
+		document.getElementsByName("useworker")[0].disabled = true;
+		document.getElementsByName("useworker")[0].checked = false;
+	}
+	
+	var transferable = use_worker;
+	if(!transferable) {
+		document.getElementsByName("xferable")[0].disabled = true;
+		document.getElementsByName("xferable")[0].checked = false;
+	}
+	
+	var wtf_mode = false;
+	
+	function to_csv(workbook) {
+		var result = [];
+		var firstSheet = false;
+		workbook.SheetNames.forEach(function(sheetName) {
+			var csv = X.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+			if(csv.length > 0 && !firstSheet){
+				result.push(sheetName);
+				result.push("");
+				result.push(csv);
+				firstSheet = true; //Only read the first sheet.
+			}
+		});
+		return result.join("\n");
+	}
+	
+	function fixdata(data) {
+		var o = "", l = 0, w = 10240;
+		for(; l<data.byteLength/w; ++l) o+=String.fromCharCode.apply(null,new Uint8Array(data.slice(l*w,l*w+w)));
+		o+=String.fromCharCode.apply(null, new Uint8Array(data.slice(l*w)));
+		return o;
+	}
+	
+	function to_json(workbook) {
+		var result = {};
+		workbook.SheetNames.forEach(function(sheetName) {
+			var roa = X.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+			if(roa.length > 0){
+				result[sheetName] = roa;
+			}
+		});
+		return result;
+	}
+	
+	var global_wb;
+	function process_wb(wb) {
+		global_wb = wb;
+		
+		var output = "";
+		
+		output = to_csv(wb);
+		buildTable(output);
+	}
+	
+	function removeCommaBetweenDoubleQuote(aString) {
+		var result = aString
+		// find first occurance of "
+		var iStart = aString.indexOf('"');
+		var iEnd = iStart + 1;
+		if (iStart >= 0) {
+			// find ending quote "
+			iEnd = aString.indexOf('"', iEnd);
+			if (iEnd > 0) {
+				var value = aString.substring(iStart+1, iEnd);
+				// alert("Before value "+value);
+				var i = value.indexOf(',');
+				if (i > 0) {
+					//value.replace(',', '');
+					value=value.replace(/,/g, "")
+					//value = value.substring(0,i) + value.substring(i+1);
+				}
+				// alert("After value "+value);
+				result = aString.substring(0, iStart) + value + aString.substring(iEnd+1);
+			}
+		}
+		return result;
+	}
+	
+	function trimValue(inputStr){
+		if(inputStr != null){
+			return inputStr.trim();
+		}
+		return inputStr;
+	}
+	
+	function trimAndToUpper(inputStr){
+		if(inputStr != null){
+			return inputStr.trim().toString().toUpperCase();
+		}
+		return inputStr;
+	}
+	
+	function removeEmptyColumnNames(arr) {
+		for (var i = 0; i < arr.length; i++) {
+			if (arr[i] == null || arr[i] == '') {
+			  arr.splice(i, 1);
+			};
+		};
+		return arr;
+	}
+	function buildTable(output) {
+		var rows = output.split('\n');
+		var rowData = [];
+		var title = rows[0];
+		var data = [];
+		var columnNames = [];
+		var isValid = true;
+		// this approach is interesting if you need to dynamically create data in Javascript 
+			var metadata = [];
+		// heading built successfully.  rows[0] = wd sheet name, rows[1] = blank space
+		for (var j = 0; j < rows.length-1; j++) {
+		//alert(rows.length);
+			if (rows[j].length > 0) {
+				rows[j] = removeCommaBetweenDoubleQuote(rows[j]);
+				var oneRow = rows[j].split(",");
+				if (rows[j].length > 0) {
+					if (j == 2 ) {
+						columnNames = removeEmptyColumnNames(oneRow);
+						for (var k = 0; k < columnNames.length; ++k) {
+							metadata.push({ name: trimAndToUpper(columnNames[k]), label: trimAndToUpper(columnNames[k]), datatype: "string", editable: false});
+							//alert("metadata: "+k+" "+columnNames[k]);
+						}
+						//metadata.push({ name: 'ID', label: 'ID', datatype: "string", editable: false, hidden: true});
+					} else {
+						if (j > 2) {
+						 var nowTemp = new Date();
+			             var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+			       		 var display2 = {};
+						 var rowValues = {};
+						 var icount = j-2;
+						 display2["id"] = icount;
+						 for (var i = 0; i < columnNames.length; ++i) {
+ 							 if ((trimAndToUpper(columnNames[i]) == "CREDIT_AMOUNT")||(trimAndToUpper(columnNames[i]) == "PAYMENT_AMOUNT")){
+								
+									if(!isEmpty(oneRow[i])){
+
+										 if(isNumber(oneRow[i])){
+												rowValues[trimAndToUpper(columnNames[i])] =	convertAmountFormat(oneRow[i]);
+										    }else{
+										    	rowValues[trimAndToUpper(columnNames[i])] =	"InvalidAmount";
+										    }
+									}
+									else{
+										rowValues[trimAndToUpper(columnNames[i])] = oneRow[i];
+									}
+								}else 
+								{
+								  rowValues[trimAndToUpper(columnNames[i])] = oneRow[i];
+								}
+						}
+							display2["values"] = rowValues;
+						 	var myData = JSON.stringify(rowValues);
+						 	
+							data.push({id: icount, values: rowValues});
+						}
+					}
+				}
+			}
+		}
+		
+		var message = [];
+		message.error = "";
+		/* var tempData = Array.from(data); */
+		isValid = validateInvoiceData(data, message, columnNames);
+		
+		if(isValid){
+			editableGrid = new EditableGrid(title, {
+				modelChanged: function(rowId, colId, oldValue, newValue, row) {
+					data[rowId].values[columnNames[colId]] = newValue;
+				}
+			});
+			editableGrid.load({"metadata": metadata, "data": data});
+			editableGrid.renderGrid("tablecontent", "testgrid","testgrid");
+			fileData = data;
+			dataUploaded = true;
+			//alert();
+			$("#invoice-export-btn").removeAttr('disabled');
+		}
+		else{
+			$("#errorMessageModal").html(message.error);
+			$('#myModal6').modal('toggle');
+		}
+
+	} 
+	
+	function isEmpty(inputStr){
+		var isEmpty1 = false;
+		if(inputStr == null || inputStr.toString().trim() == '' || inputStr.toString().trim().lenght == 0){
+			isEmpty1 = true;
+		}
+		return isEmpty1;
+	}
+	
+	function validateInvoiceHeaderName(columnNames){
+		 var valid = true;
+		if(columnNames != null){
+			for(i = 0; i < columnNames.length ; i++){
+				if(trimAndToUpper(columnNames[i]).indexOf(trimAndToUpper(invoiceDiscountHeader[i]))){
+					valid = false;
+					return false;
+				}
+
+			}
+		}
+		return valid;
+	}
+	function validateInvoiceData(data, message, columnNames){
+		var isValid = false;
+		var invalidRows = "";
+		var invalidAmtRows="";
+		
+		if(columnNames != null){
+			var isHeaderValid = validateInvoiceHeaderName(columnNames);
+			if(!isHeaderValid){
+				message.error = " Column names not matching. Please upload a valid template."
+				return isHeaderValid;
+			}
+		}
+		if(data != null && data.length > 0){
+			isValid = true;
+       		if(columnNames.length != invoiceDiscountHeader.length){
+    			message.error = " Column length is not matching. Please upload a valid template."
+    			isValid = false;
+    		}
+    		 if(isValid){
+    		    var counter = 2;
+	    		var rowInvalid = false;
+	    		var amtInvalid= false;
+	        	  $.each(data, function (i, row) {
+	        	   	var values = row.values;
+	        		counter++;
+	        		rowInvalid=false;
+	        		amtInvalid= false;
+	        		/* if(isEmpty(values[invoiceDiscountHeader[0]]) || isEmpty(values[invoiceDiscountHeader[1]]) || isEmpty(values[invoiceDiscountHeader[2]]) || isEmpty(values[invoiceDiscountHeader[3]]) || isEmpty(values[invoiceDiscountHeader[4]])
+	        		 || isEmpty(values[invoiceDiscountHeader[5]]) || isEmpty(values[invoiceDiscountHeader[6]]) ){
+	        			
+	        		rowInvalid = true;
+	        		isValid = false;
+	        		}  */
+	        		if((values[invoiceDiscountHeader[11]]=="InvalidAmount")||(values[invoiceDiscountHeader[12]]=="InvalidAmount")){
+	        			amtInvalid=true;
+	        			isValid = false;
+	        		}
+	        		if(rowInvalid){
+	        			if(!isEmpty(invalidRows)){
+	        				invalidRows = invalidRows + ", ";
+	        			}
+	        			invalidRows =  invalidRows + row.id;
+	        		}
+	        		if(amtInvalid){
+	        			if(!isEmpty(invalidAmtRows)){
+	        				invalidAmtRows = invalidAmtRows + ", ";
+	        			}
+	        			invalidAmtRows =  invalidAmtRows + row.id;
+	        		}
+				});
+				if(!isEmpty(invalidRows)){
+					message.error = message.error + " Empty rows detected on line(s) " + invalidRows + ".<br><br>";
+				}
+				if(!isEmpty(invalidAmtRows)){
+					message.error = message.error + " Invalid Amount detected on line(s) " + invalidAmtRows + ".<br><br>";
+				}
+				
+    		} 
+		}
+		else{
+   			message.error = "No data to validate. Please upload a valid template."
+ 			isValid = false;
+		}
+		 if(isValid){
+			//If client side validation is successfull, then call service side for validation.
+				 /* var reconDataList=[];
+				$.each(data, function(key, rowData) {
+				  var reconData  = new Object();
+				  reconData.sapGl=rowData.values['SAP_GL'];
+				  reconData.accountDesc=rowData.values['ACCOUNT_DESC'];
+				  reconData.sortFlag=rowData.values['SORT_FLAG'];
+				  reconData.docNo=rowData.values['DOC_NO'];
+				  reconData.notes= rowData.values['NOTES'];
+				  reconData.pgmId=rowData.values['PROGRAM_ID'];
+				  reconData.pfId=rowData.values['PF_ID'];
+				  reconData.billTo=rowData.values['BILL_TO_FORMAT'];
+				  reconData.acctPert=rowData.values['ACCT_PER'];
+				  reconData.year=rowData.values['YEAR'];
+				  reconData.type=rowData.values['TYPE'];
+				  reconData.creditAmount=removeCommaFromAmount(rowData.values['CREDIT_AMOUNT']);
+				  reconData.payAmount=removeCommaFromAmount(rowData.values['PAYMENT_AMOUNT']);
+				  reconData.remarks=rowData.values['REMARKS'];
+				  reconDataList.push(reconData);
+				});
+
+				
+			 $.ajax({
+					type: "POST",
+					url: "/SIM/recon/v1/validateReconCreditPaymentData/",
+					dataType: 'json',
+					async: false,
+					contentType: 'application/json',
+					data: JSON.stringify(reconDataList),
+					success: function (response) {
+			            if (response != null && response.data.success == false) {
+			            	isValid = false;
+							message.error = "Issue while uploading the data. Please correct the following data.!!"+'<br><br>'+response.data.message;
+			            }
+					},
+					failure: function(response){
+         				$("#errorMessage").html("Issue while uploading the data. Please try again after sometime.!!");
+						$('#myModal5').modal('toggle');
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) { 
+						message = "<strong> Error :</strong> " + errorThrown + "<br><strong>Message :</strong> " + XMLHttpRequest.responseText;
+						 $("#errorMessage").html(message);
+						 $('#myModal5').modal('toggle');                    	
+					} 
+			    });  */
+		} 
+		return isValid;
+	}
+	
+	function handleFile(e) {
+		rABS = false;
+		use_worker = false;
+	 
+		var files = e.target.files;
+		var f = files[0];
+		{
+			var reader = new FileReader();
+			var name = f.name;
+			reader.onload = function(e) {
+				if(typeof console !== 'undefined') console.log("onload", new Date(), rABS, use_worker);
+				var data = e.target.result;
+				if(use_worker) {
+					xw(data, process_wb);
+				} else {
+					var wb;
+					if(rABS) {
+						wb = X.read(data, {type: 'binary'});
+					} else {
+						var arr = fixdata(data);
+						wb = X.read(btoa(arr), {type: 'base64'});
+					}
+					process_wb(wb);
+				}
+			};
+			if(rABS) reader.readAsBinaryString(f);
+			else reader.readAsArrayBuffer(f);
+		}
+	}
+</script>
+<!-- 
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-36810333-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+ -->
+
+
+
+
+
+<!-- Inline javascript to set the user name from model attribute Begin -->
+<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function() {
+				
+	   var modelAttributeValue = [[${loginUserNameValue}]];
+	   $("#loginUserName").html(modelAttributeValue);
+	   
+	
+	   
+	   var emp = [[${EmployeeInfo}]];
+	    if(1==emp[0].ROLE_ID)
+	   	{
+	   		//openSidebar();
+	   		$('[id^="tbp_menu"]').show();
+		}else{ 
+			
+			 $.ajax({ 
+	            	type: "GET",
+	            	dataType: "json",
+	            	 cache: false,
+	           	url: '/SIM/isTbpUser',
+	            	success: function(response){
+	            		if(response.empId!=null){
+	            			
+	            			 //openSidebar();
+	            			 $('[id^="tbp_menu"]').show();
+	            		}
+	            	},
+	            	failure: function(response){
+	            		alert("Wrongly done");
+	            	},
+					error: function(XMLHttpRequest, textStatus, errorThrown) { 
+						message = "<strong> Error :</strong> " + errorThrown + "<br><strong>Message :</strong> " + XMLHttpRequest.responseText;
+						 $("#errorMessage").html(message);
+						 $('#myModal5').modal('toggle');                    	
+					}
+	        	});
+		}
+/* 	   var url="/SIM/getEmployeeDetail/"+emp[0].MANAGER_ID;
+    	$.ajax({ 
+        	type: "GET",
+        	dataType: "json",
+       	url: url,
+       	async: false,
+        	success: function(response){
+        		console.log(response);
+        		
+        		 $("#requestedBy").html("Name: "+modelAttributeValue);
+				   $("#requestedTitle").html("Title: "+emp[0].TITLE_ID);
+				   $("#approvedBy").html("Name: "+response.first_NAME+" "+response.last_NAME);
+				   $("#approvedTitle").html("Title: "+response.title.title);
+				   
+        	},
+        	failure: function(response){
+        		alert("Wrongly done");
+        	}
+    	}); */
+	   
+	});
+</script>
+<!-- Inline javascript to set the user name from model attribute End -->
+
+
+</head>
+<body>
+
+	<section id="container" >
+		<!--header start-->
+		<header class="header dark-bg">
+			<div class="sidebar-toggle-box" id="sidebar-toggle-box"
+				style="display: none">
+				<i class="fa fa-bars"></i>
+			</div>
+			<!--logo start-->
+			<a href="index.html" class="logo"><img
+				src="resources/img/yokohama-logo.svg" width="132" height="52"></a>
+			<!--logo end-->
+			<div class="nav notify-row" id="top_menu">
+				<!--  notification start -->
+				<ul class="nav top-menu">
+					<!-- settings start -->
+					<!-- settings end -->
+
+					<!-- notification dropdown start-->
+					<!-- <li id="header_notification_bar" class="dropdown">
+                  <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                      <i class="fa fa-bell-o"></i>
+                      <span class="badge bg-important">7</span>
+                  </a>
+                  <ul class="dropdown-menu extended notification">
+                      <div class="notify-arrow notify-arrow-yellow"></div>
+                      <li>
+                          <p class="yellow">You have 7 new notifications</p>
+                      </li>
+                      <li>
+                          <a href="#">
+                              <span class="label label-success"><i class="fa fa-bell"></i></span>
+                              #20543 has been approved
+                              <span class="small italic">30 mins</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#">
+                              <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                               #20543 has been rejected
+                              <span class="small italic">4 hrs</span>
+                          </a>
+                      </li>
+                  </ul>
+              </li> -->
+					<!-- notification dropdown end -->
+				</ul>
+			</div>
+			<div class="top-nav">
+				<ul class="nav pull-right top-menu">
+					<!-- <li>
+                     <input type="text" class="form-control search" placeholder="Search">
+                  </li> -->
+					<!-- user login dropdown start-->
+					<li class="dropdown"><a data-toggle="dropdown"
+						class="dropdown-toggle" href="#"> <span class="username"
+							id="loginUserName"></span> <b class="caret"></b>
+					</a>
+						<ul class="dropdown-menu extended logout">
+							<div class="log-arrow-up"></div>
+							<li><a id="logout-btn" href="/SIM/logout"><i
+									class="fa fa-key"></i> Log Out</a></li>
+						</ul></li>
+					<!-- user login dropdown end -->
+				</ul>
+				<center>
+					<h3 style="color: white; font-size: 20px;">
+						
+						</h2>
+				</center>
+			</div>
+		</header>
+		<!--header end-->
+		
+		<!--main content start-->
+		<section id="main-content">
+			<section class="wrapper">
+				<!-- page start-->
+				<div id="pricing-parent-div" class="row">
+					<div class="col-lg-12">
+						<section class="panel">
+							<header class="panel-heading">
+								 <center><h3>Add Bulk Orders</h3></center>
+							</header>
+							
+							<div class="panel-body">
+								<form id="pricingRequest" name="pricingRequest" role="form"
+									class="cmxform">
+									
+									<div class="adv-table editable-table">
+										<div class="clearfix">
+										
+										
+										<table style="table-layout: fixed;" width="100%">
+										<tr><td><label class="control-label" for="dealer">Select a Dealer</label></td>
+										<td><select class="form-control input-sm m-bot15 required" id="dealer" name="dealer">
+													<option></option>
+                                                </select></td></tr>
+                                          <tr>      
+                                                <td><label class="control-label" for="manager">Customer Email</label></td>
+                                                 <td><input id="cust_email" name="cust_email" type="text" class="form-control"  value="" ></td>
+                                             </tr>
+                                              <tr>      
+                                                <td><label class="control-label" for="manager">Customer Phone</label></td>
+                                                 <td><input id="cust_phone" name="cust_phone" type="text" class="form-control"  value="" ></td>
+                                             </tr>
+                                              <tr>      
+                                                <td><label class="control-label" for="manager">Order By</label></td>
+                                                 <td><input id="order_by" name="order_by" type="text" class="form-control"  value="" ></td>
+                                             </tr>
+                                              <tr>     
+                                                <td colsapn="2"><br> You can upload bulk orders by PO#, Date, Tire Shop, Product Number, Quantity and Description in a CSV file </td>
+                                                 
+                                             </tr>
+                                             
+                                             <tr>
+                                             <td><br><label class="control-label" for="uploadFile">Select File </label></td>
+                                             <td><br> <input
+																	type="file" name="xlfile" id="xlf"  />
+																	<br>
+																	<!-- <button id="attachment_add" class="btn btn-default">
+																		Upload Files <i class="fa fa-plus"></i>
+																	</button> --></td>
+                                             </tr>
+										</table>
+											
+
+<!-- 											<div class="row">
+											<div class="col-lg-12">
+												<div class="col-sm-5">
+													<input type="file" name="xlfile" id="xlf" />
+												</div>
+											</div>
+									    </div> -->
+										</div>
+									</div>
+									<div class="adv-table editable-table p-left16">
+										<br />
+										<div id="tablecontent" class="table-responsive"></div>
+									</div>
+									<script>
+ 	
+	var xlf = document.getElementById('xlf');
+		if(xlf.addEventListener) {
+		xlf.addEventListener('change', handleFile, false);
+	} 
+ 	
+ 	</script>
+
+									<script>
+        $(function () {
+
+            $("#input").on("change", function () {
+                var excelFile,
+                    fileReader = new FileReader();
+
+                $("#result").hide();
+
+                fileReader.onload = function (e) {
+                    var buffer = new Uint8Array(fileReader.result);
+
+                    $.ig.excel.Workbook.load(buffer, function (workbook) {
+                        var column, row, newRow, cellValue, columnIndex, i,
+                            worksheet = workbook.worksheets(0),
+                            columnsNumber = 0,
+                            gridColumns = [],
+                            data = [],
+                            worksheetRowsCount;
+
+                        // Both the columns and rows in the worksheet are lazily created and because of this most of the time worksheet.columns().count() will return 0
+                        // So to get the number of columns we read the values in the first row and count. When value is null we stop counting columns:
+                        while (worksheet.rows(0).getCellValue(columnsNumber)) {
+                            columnsNumber++;
+                        }
+
+                        // Iterating through cells in first row and use the cell text as key and header text for the grid columns
+                        for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                            column = worksheet.rows(0).getCellText(columnIndex);
+                            gridColumns.push({ headerText: column, key: column });
+                        }
+
+                        // We start iterating from 1, because we already read the first row to build the gridColumns array above
+                        // We use each cell value and add it to json array, which will be used as dataSource for the grid
+                        for (i = 1, worksheetRowsCount = worksheet.rows().count() ; i < worksheetRowsCount; i++) {
+                            newRow = {};
+                            row = worksheet.rows(i);
+
+                            for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                                cellValue = row.getCellText(columnIndex);
+                                newRow[gridColumns[columnIndex].key] = cellValue;
+                            }
+
+                            data.push(newRow);
+                        }
+
+                        // we can also skip passing the gridColumns use autoGenerateColumns = true, or modify the gridColumns array
+                        createGrid(data, gridColumns);
+// 						createEditableGrid(data, gridColumns);
+                    }, function (error) {
+                        $("#result").text("The excel file is corrupted.");
+                        $("#result").show(1000);
+                    });
+                }
+
+                if (this.files.length > 0) {
+                    excelFile = this.files[0];
+                    if (excelFile.type === "application/vnd.ms-excel" || excelFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || (excelFile.type === "" && (excelFile.name.endsWith("xls") || excelFile.name.endsWith("xlsx")))) {
+                        fileReader.readAsArrayBuffer(excelFile);
+                    } else {
+                        $("#result").text("The format of the file you have selected is not supported. Please select a valid Excel file ('.xls, *.xlsx').");
+                        $("#result").show(1000);
+                    }
+                }
+
+            })
+        })
+
+        function createGrid(data, gridColumns) {
+            if ($("#grid1").data("igGrid") !== undefined) {
+                $("#grid1").igGrid("destroy");
+            }
+
+            $("#grid1").igGrid({
+                columns: gridColumns,
+                autoGenerateColumns: true,
+                dataSource: data,
+                width: "100%"
+            });
+        }
+      
+</script>
+
+									<br /> <br />
+
+									
+
+									
+									<!-- END Program Terms -->
+
+									<!-- START Shippng Terms -->
+									
+									<!-- END Shippng Terms -->
+
+									<!---- START Submit for Approval -->
+									<div class="clearfix space15"></div>
+									<div class="clearfix"></div>
+									<div id="footer-button" class="modal-footer">
+										<button id="cancel-pricing" data-dismiss="modal"
+											class="btn btn-default" type="button"
+											onclick="cancelClick()">Reset</button>
+										&nbsp; <a class="btn btn-success" id="submit-pricing"
+											href="javascript: validateBeforeSubmit('#myModal')"
+											onkeypress="if(event.keyCode==32||event.keyCode==13){validateBeforeSubmit('#myModal');};">
+											<i class="fa fa-check-circle"></i>&nbsp;&nbsp;Upload File</a>&nbsp;
+										<!-- Modal -->
+
+										<div class="modal fade" id="myModal" tabindex="-1"
+											role="dialog" aria-labelledby="myModalLabel"
+											aria-hidden="true" data-backdrop="static" data-keyboard="false">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button id="program-submit-modal-close" type="button"
+															class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Submit for Approval?</h4>
+													</div>
+													<div class="modal-body">
+														<div class="space15">&nbsp;</div>
+														<div class="text-center">Are you sure you want to
+															Submit Data? If you still want to submit click the OK button. If you don't want to
+															submit, click the "Cancel" button below and your program
+															will not be submitted.</div>
+														<div class="space15"></div>
+													</div>
+													<div class="modal-footer">
+														<button id="program-submit-modal-cancel"
+															data-dismiss="modal" class="btn btn-default"
+															type="button">Cancel</button>
+														<a href="javascript: submitForApproval(true)"
+															onkeypress="if(event.keyCode==32||event.keyCode==13){submitForApproval(true);};">
+															<button id="program-submit-modal-ok" class="btn btn-info"
+																type="button">
+																<i class="fa fa-save"></i>&nbsp;&nbsp;OK
+															</button>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="modal fade" id="myModalE" tabindex="-1"
+											role="dialog" aria-labelledby="myModalLabel"
+											aria-hidden="true" data-backdrop="static" data-keyboard="false">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button id="program-submit-modal-close" type="button"
+															class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Delete all data?</h4>
+													</div>
+													<div class="modal-body">
+														<div class="space15">&nbsp;</div>
+														<div class="text-center">No Manual Adjustment(s) to upload. Do you still want to continue processing the recon report?</div>
+														<div class="space15"></div>
+													</div>
+													<div class="modal-footer">
+														<button id="program-submit-modal-cancel"
+															data-dismiss="modal" class="btn btn-default"
+															type="button">Cancel</button>
+														<a href="javascript: submitForApproval(false)"
+															onkeypress="if(event.keyCode==32||event.keyCode==13){submitForApproval(false);};">
+															<button id="program-submit-modal-ok" class="btn btn-info"
+																type="button">
+																<i class="fa fa-save"></i>&nbsp;&nbsp;OK
+															</button>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="modal fade" id="myModal4" tabindex="-1"
+											role="dialog" aria-labelledby="myModalLabel"
+											aria-hidden="true" data-backdrop="static" data-keyboard="false">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button id="program-confirmation-modal-close"
+															type="button" class="close" data-dismiss="modal"
+															aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Confirmation</h4>
+													</div>
+													<div class="modal-body">
+														<!-- <div class="space15">&nbsp;</div> -->
+														<div class="text-center">
+															<span id="confirmMessage"></span>
+														</div>
+														<!-- <div class="space15"></div> -->
+													</div>
+													<div class="modal-footer">
+													<!-- <a href="javascript: cancelClick()"
+															onkeypress="if(event.keyCode==32||event.keyCode==13){ cancelClick();};"> -->
+														<button class="btn btn-info" type="button"
+															id="program-confirmation-modal-ok" data-toggle="modal"
+															href="#myModal4" >
+															<i class="fa fa-save"></i>&nbsp;&nbsp;OK
+														</button>
+														<!-- </a> -->
+													</div>
+													
+													
+													
+												</div>
+											</div>
+										</div>
+
+										<div class="modal fade" id="myModal5" tabindex="-1"
+											role="dialog" aria-labelledby="myModalLabel"
+											aria-hidden="true" data-backdrop="static" data-keyboard="false">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button id="program-confirmation-modal-close"
+															type="button" class="close" data-dismiss="modal"
+															aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Issue in Saving Data</h4>
+													</div>
+													<div class="modal-body">
+														<!-- <div class="space15">&nbsp;</div> -->
+														<div class="text-center">
+															<span id="errorMessage"></span>
+														</div>
+														<!-- <div class="space15"></div> -->
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-info" type="button"
+															id="program-confirmation-modal-ok" data-toggle="modal"
+															href="#myModal5">
+															<i class="fa fa-save"></i>&nbsp;&nbsp;OK
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal fade" id="myModal6" tabindex="-1"
+											role="dialog" aria-labelledby="myModalLabel"
+											aria-hidden="true" data-backdrop="static" data-keyboard="false">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button id="program-confirmation-modal-close"
+															type="button" class="close" data-dismiss="modal"
+															aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Incorrect Data</h4>
+													</div>
+													<div class="modal-body">
+														<!-- <div class="space15">&nbsp;</div> -->
+														<div class="text-center">
+															<span id="errorMessageModal"></span>
+														</div>
+														<!-- <div class="space15"></div> -->
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-info" type="button"
+															id="program-confirmation-modal-ok" data-toggle="modal"
+															href="#myModal6">
+															<i class="fa fa-save"></i>&nbsp;&nbsp;OK
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal fade" id="statusbox" tabindex="-1"
+                                               role="dialog" aria-labelledby="myModalLabel"
+                                               aria-hidden="true" data-backdrop="static" data-keyboard="false" >
+                                               <div class="modal-dialog">
+                                                      <div class="modal-content" style="border: thin solid grey">
+										                     <div class="modal-header">
+										                           <h4 class="modal-title">Status</h4>
+										                     </div>
+										                     <div class="modal-body">
+										                           <!-- <div class="space15">&nbsp;</div> -->
+										                           <div class="text-center">
+										                                  <span>Please wait, while your request is being processed.<br><img src="resources/img/Processing.gif"></span>
+										                           </div>
+										                           <!-- <div class="space15"></div> -->
+										                     </div>                                                                           
+										
+										              </div>
+										       </div>
+										</div>
+										<div class="modal fade" id="myModal11" tabindex="-1"
+											role="dialog" aria-labelledby="myModalLabel"
+											aria-hidden="true" data-backdrop="static" data-keyboard="false">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button id="program-save-modal-close" type="button"
+															class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Cancel Program Changes?</h4>
+													</div>
+													<div class="modal-body">
+														<div class="space15">&nbsp;</div>
+														<div class="text-center">Are you sure you want to
+															cancel Changes? If you still want to cancel your changes,
+															click the OK button. If you don't want to cancel your
+															changes, click the "Cancel" button below and your program
+															will not cancel these changes.</div>
+														<div class="space15"></div>
+													</div>
+													<div class="modal-footer">
+														<button data-dismiss="modal" class="btn btn-default"
+															id="program-save-modal-cancel" type="button">Cancel</button>
+														<a href="javascript: returnToPreviousPage()"
+															onkeypress="if(event.keyCode==32||event.keyCode==13){returnToPreviousPage();};">
+															<button class="btn btn-info" id="program-save-modal-ok"
+																type="button">
+																<i class="fa fa-save"></i>&nbsp;&nbsp;OK
+															</button>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</section>
+					</div>
+				</div>
+				<!-- END opening ROW -->
+			</section>
+		</section>
+		<!--main content end-->
+
+		<!--footer start-->
+		<footer class="site-footer">
+			<div class="text-center">
+				2017 &copy; Yokohama Tire Corporation. All rights reserved. The
+				Yokohama Rubber Company Limited <a href="#" class="go-top"> <i
+					class="fa fa-angle-up"></i>
+				</a>
+			</div>
+		</footer>
+		<!--footer end-->
+	</section>
+	<!-- END section id="container" FIRST section after opening body tag  -->
+
+	<!--Tooltips -->
+	<script>
+            $(document).ready(function(){
+                $('input[rel="txtTooltip"]').tooltip();
+          	  $.ajax({ 
+                	type: "GET",
+                	dataType: "json",
+               		url: '/YTCAdminApp/v1/getAllDealerDropDownList',
+                	success: function(response){
+                		//alert("success");
+                		 $("#dealer").empty();
+                        fnPopulateDropdown('dealer', response);
+                       
+                        
+                         	      	 
+                	},
+                	failure: function(response){
+                		alert("Wrongly done");
+                	}
+            	});
+         	
+          	  function fnPopulateDropdown(elementId, items){
+                    
+                    if(items != null){
+                         $.each(items, function (i, item) {
+                                    $('#'+ elementId).append($('<option>', { 
+                                        value: item.value,
+                                        text : item.key 
+                                    }));
+                                });
+                  }
+       		 }  
+         	 
+            });
+       </script>
+	<script>
+           $(function(){
+
+            // Enabling Popover Example 1 - HTML (content and title from html tags of element)
+            $("[data-toggle=popover]").popover();
+
+            // Enabling Popover Example 2 - JS (hidden content and title capturing)
+            $(".form-control").popover({
+                html : true, 
+                content: function() {
+                  return $('.js-tooltip').html();
+                },
+                title: function() {
+                  return $('.js-tooltip').html();
+                }
+            });
+
+
+        });
+           
+       </script>
+	<script type="text/javascript">
+			var responseOnload = {};
+		 	function submitForApproval(data){
+		 	
+		 		var message = "Your data uploaded successfully.";
+         		responseOnload.status = "2";
+         		responseOnload.action = 'submit';
+         		responseOnload.url = window.location.href;
+         		prepareDataForSubmit();
+         		if(data){
+             		$('#myModal').modal('toggle');
+		 		}else{
+             		$('#myModalE').modal('hide');
+		 		}
+         		
+         	}
+         	
+         	function prepareDataForSubmit(){
+				var orderDataList=[];
+				$.each(fileData, function(key, data) {
+				  var order  = new Object();				  
+				  order.po=data.values['PO'];
+				  order.date=data.values['DATE'];
+				  order.tireShop=data.values['TIRESHOP'];
+				  order.product=data.values['PRODUCT NUMBER'];
+				  order.order= parseInt(data.values['ORDER']);
+				  order.description=data.values['DESCRIPTION'];
+				  order.dealer="";
+				  order.customerEmail="";
+				  order.customerPhone="";
+				  order.orderBy="";
+				  orderDataList.push(order);			  
+				  
+				  
+				});
+				console.log(orderDataList);
+				$('#statusbox').modal('show');
+				/*Service call to save the data.*/	
+			    $.ajax({
+					type: "POST",
+					url: "/YTCAdminApp/v1/uploadOrder",
+					dataType: 'json',
+					contentType: 'application/json',
+					data: JSON.stringify(orderDataList),
+					success: function (response) {
+						$('#statusbox').modal('hide');
+			            if (response != null && response.data.success == true) {
+			            	responseOnload = response.data;
+			            	if(responseOnload.message=='success'){
+			            		$("#confirmMessage").html("Reconciliation process completed successfully");
+			            	}else{
+			            		$("#confirmMessage").html("Reconciliation process completed successfully");
+			            	}
+							$('#myModal4').modal('toggle');
+							
+			            } else {
+			              	/* $('#myModal1').modal('toggle'); */
+         					$("#errorMessage").html("Issue while saving the data. Please correct the following data.");
+							$('#myModal5').modal('toggle');
+			            }
+			            
+					},
+					failure: function(response){
+						$('#statusbox').modal('hide');
+					 	/* $('#myModal1').modal('toggle'); */
+         				$("#errorMessage").html("Issue while saving the data. Please try again after sometime.!!");
+						$('#myModal5').modal('toggle');
+						//alert("Issue while saving the data. Please try again after sometime.!!");
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						$('#statusbox').modal('hide'); 
+						message = "<strong> Error :</strong> " + errorThrown + "<br><strong>Message :</strong> " + XMLHttpRequest.responseText;
+						 $("#errorMessage").html(message);
+						 $('#myModal5').modal('toggle');                    	
+					}  
+			    });
+ 			}
+         	
+		
+			function validateBeforeSubmit(modalId){
+			 if(fileData.length>0){
+					$(modalId).modal('toggle');
+				}
+				else{
+					/* $("#errorMessageModal").html("Please correct the highlighted errors.");
+					$('#myModal6').modal('toggle'); */
+					$('#myModalE').modal('toggle');
+				} 
+			}
+			
+			
+			$(':input').change(function(){
+				_isDirty = true;
+			});
+	</script>
+	<!--  Validation setup Begins -->
+	<script type="text/javascript">
+      $(document).ready(function () {
+			$('#xlf').click(function(){
+				 this.value = null;
+			 });
+			});
+          
+  </script>
+	<!--  Validation setup Ends -->
+
+	<script type="text/javascript">
+	       				
+			function cancelClick(modalId){
+				window.location.href='/YTCAdminApp/fileupload';
+					
+			}
+			$('#myModal7').on('shown.bs.modal', function () {
+			    $('#approveComments').focus();
+			});
+			
+			$('#myModal8').on('shown.bs.modal', function () {
+			    $('#rejectionComments').focus();
+			})
+			
+			function convertAmountFormat(amount){
+				if(amount != null && amount != 0){
+					/*Remove comma's if already present*/
+					amount = amount.toString().replace(/,/g, "");
+					if(!isNaN(amount)){
+						amount = parseFloat(amount).toFixed(2);
+						var withCommas = Number(amount).toLocaleString('en',
+																{ minimumFractionDigits: 2 });
+																
+						return withCommas;
+					}
+				}
+				else {
+					if(amount != null && amount.toString().trim() != "" && !isNaN(amount)){
+						return parseInt(amount);
+					}
+				}
+				return amount;
+			}   
+			
+			function removeCommaFromAmount(amount){
+				if(amount != null){
+					return amount.toString().replace(/\,/g,'');
+				}
+			}  
+			
+			function isNumber(value){
+				var isNumber = true;
+				var regex = /^[0-9.,-]+$/;
+				if( !regex.test(value) ) {
+				  isNumber = false;
+				}
+			    return isNumber;
+			}
+	</script>
+
+	<script>
+        $(function(){
+		
+		 $('.popovers').popover();
+
+         // Enabling Popover Example 1 - HTML (content and title from html tags of element)
+         $("[data-toggle=popover]").popover();
+
+         // Enabling Popover Example 2 - JS (hidden content and title capturing)
+         $(".form-control").popover({
+             html : true, 
+             content: function() {
+               return $('.js-tooltip').html();
+             },
+             title: function() {
+               return $('.js-tooltip').html();
+             }
+         });
+
+
+     });
+        
+    </script>
+
+	<script>
+	    $(function(){
+	        $('html').keydown(function(e){
+	            var key = e.which;
+	            if(e.altKey == true && key == 37) { //37 - left arrorw
+	                e.preventDefault();
+            		console.log("e.altKey : "+e.altKey +" key : "+key);
+	            	$.ajax({
+	         			type: "POST",
+	         			url: "/SIM/browserclose",
+	         			dataType: 'json',
+	         			contentType: 'application/json',
+	         			data: {}
+	         	    }); 
+	         	    window.location="login"; 
+	            }
+	            
+	        });
+	    });
+    </script>
+    
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			function getValueForInput(inputValue){
+				if(inputValue == null || inputValue == undefined){
+					return "";
+				}
+				return inputValue;
+			}
+
+		});
+	</script>
+	     <!--common script for all pages-->
+      
+    <script src="resources/js/common-scripts.js"></script>
+</body>
+</html>

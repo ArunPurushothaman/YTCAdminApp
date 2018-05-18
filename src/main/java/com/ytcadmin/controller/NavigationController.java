@@ -81,5 +81,27 @@ public class NavigationController{
 		return returnModel;
 	}
 	
+	@RequestMapping(value ={"/fileupload"}, method = RequestMethod.GET)
+	public String excelUpload(HttpServletRequest request, Model model) {
+		String userName = null;
+		String returnModel = "add_bulk_order";
+		List<Employee> employee = null;
+		/*if (serviceContext != null && serviceContext.getEmployee() != null) {
+			userName = serviceContext.getEmployee().getFIRST_NAME() + ProgramConstant.NAME_DELIMITER
+					+ serviceContext.getEmployee().getLAST_NAME();
+			returnModel = "employee-absence-report";
+			model.addAttribute("loginUserNameValue", userName);
+			employee = new ArrayList<Employee>();
+			employee.add(serviceContext.getEmployee());
+			model.addAttribute("EmployeeInfo", employee);
+		}
+
+		if (serviceContext == null || userName == null) {
+			returnModel = "login";
+		}*/
+
+		return returnModel;
+	}
+	
 }
 
